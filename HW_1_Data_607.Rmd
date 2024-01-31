@@ -1,0 +1,124 @@
+---
+title: "HW1 - Data 607"
+author: "Natalie Kalukeerthie"
+date: "2024-01-27"
+output: html_document
+editor_options: 
+  markdown: 
+    wrap: 72
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Assignment – Loading Data into a Data Frame
+
+We are often tasked with taking data in one form and transforming it for
+easier downstream analysis. We will spend several weeks in this course
+on tidying and transformation operations. Some of this work could be
+done in SQL or R (or Python or…). Here, you are asked to use R—you may
+use any base functions or packages as you like. Your task is to first
+choose one of the provided datasets on fivethirtyeight.com that you find
+interesting:
+
+<https://data.fivethirtyeight.com/>
+
+You should first study the data and any other information on the GitHub
+site, and read the associated fivethirtyeight.com article.
+
+To receive full credit, you should: 
+
+1.  Take the data, and create one or more code blocks. You should finish with a data frame that contains a subset of the     columns in your selected dataset. If there is an obvious target (aka predictor or independent) variable, you should include this in your set of columns. You should include (or add if necessary) meaningful column names and replace (if necessary) any non-intuitive abbreviations used in the data that you selected. For example, if you had instead been tasked with working with the UCI mushroom dataset, you would include the target column for edible or poisonous, and transform “e” values to “edible.” Your deliverable is the R code to perform these transformation tasks.
+
+2.  Make sure that the original data file is accessible through your
+    code—for example, stored in a GitHub repository or AWS S3 bucket and
+    referenced in your code. If the code references data on your local
+    machine, then your work is not reproducible!
+
+3.  Start your R Markdown document with a two to three sentence
+    “Overview” or “Introduction” description of what the article that
+    you chose is about, and include a link to the article.
+
+4.  Finish with a “Conclusions” or “Findings and Recommendations” text
+    block that includes what you might do to extend, verify, or update
+    the work from the selected article.
+
+5.  Each of your text blocks should minimally include at least one
+    header, and additional non-header text.
+
+6.  You’re of course welcome—but not required--to include additional
+    information, such as exploratory data analysis graphics (which we
+    will cover later in the course).
+
+7.  Place your solution into a single R Markdown (.Rmd) file and publish
+    your solution out to rpubs.com.
+
+8.  Post the .Rmd file in your GitHub repository, and provide the
+    appropriate URLs to your GitHub repository and your rpubs.com file
+    in your assignment link.
+    
+
+# Overview
+
+The article, "Why Many Americans Don't Vote", goes through anecdotes of different citizens and their reasoning for their choices of why to vote/not vote. The data itself contains the political views and demographics of 6,000+ people who were polled about their voting history. As the article was created in Fall 2020, the topic of the 2020 presidential election was tied heavily with the findings from the data. 
+
+Article Link: https://projects.fivethirtyeight.com/non-voters-poll-2020-election/
+
+Datasource: https://data.fivethirtyeight.com/
+
+### Data Preparation
+
+```{r data load}
+#load the data
+library(tidyverse)
+library(openintro)
+
+#load csv into a dataframe
+voters_data <- read.csv('https://raw.githubusercontent.com/nk014914/Data-607/main/nonvoters_data.csv')
+
+#cleaning column names
+colnames(voters_data)[colnames(voters_data) == "RespId"] = "unique_respondent_ID"
+colnames(voters_data)[colnames(voters_data) == "income_cat"] = "income_category"
+colnames(voters_data)[colnames(voters_data) == "ppage"] = "age"
+```
+
+
+```{r creating subset}
+#subset non-voters and remove columns
+
+non_voters <- subset(voters_data, voter_category != "always", select = c('unique_respondent_ID','weight','age','educ','race','gender','income_category','voter_category'))
+
+```
+
+
+## Glimpse into the data
+
+```{r data summary}
+
+#summarize the data
+summary(non_voters)
+
+```
+
+I created some basic bar charts to visualize our demographics. 
+```{r}
+#exploratory graphics
+
+#demographic barchart
+ggplot(data = non_voters, aes(x = voter_category)) + 
+  geom_bar()
+
+ggplot(data = non_voters, aes(x = educ)) + 
+  geom_bar()
+
+ggplot(data = non_voters, aes(x = income_category)) + 
+  geom_bar()
+#
+
+```
+# Findings and Recommendations
+
+Based on the initial exploration of the data it was interested to see how of the people who do not regularly vote, a major of the sample size has gone to college. Generally, we assume that non-voters are usually those who do not have a strong educational background. With these findings, I would like to delve more into what the correlation between education and voting behavior is. 
+
+The article goes into the different voter demographics (Race, Income, Age, Education, Party ID) to see each category's voting behavior. I  believe that they can extend their finding by creating a correlation matrix, which might be helpful in determining which predictors have the strongest impact on weight.
