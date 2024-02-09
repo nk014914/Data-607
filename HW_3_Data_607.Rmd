@@ -1,0 +1,87 @@
+---
+title: "HW_3_Data_607"
+author: "Natalie Kalukeerthie"
+date: "2024-02-07"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Assignment – Character Manipulation and Data Processing
+
+
+Please deliver links to an R Markdown file (in GitHub and rpubs.com) with solutions to the problems below.  You may work in a small group, but please submit separately with names of all group participants in your submission.
+
+### 1) Using the 173 majors listed in fivethirtyeight.com’s College Majors dataset [https://fivethirtyeight.com/features/the-economic-guide-to-picking-a-college-major/], provide code that identifies the majors that contain either "DATA" or "STATISTICS"
+
+```{r}
+#load the data
+library(tidyverse)
+library(openintro)
+library(RMySQL)
+
+college_majors <- read.csv('https://raw.githubusercontent.com/fivethirtyeight/data/master/college-majors/majors-list.csv')
+
+#view the data
+head(college_majors)
+
+#use str_detect to see if pattern is in the data
+str_detect(college_majors, '(DATA|STATISTICS)')
+
+#find the pattern using grep
+grep('DATA|STATISTICS',college_majors$Major, value = TRUE,ignore.case = TRUE)
+
+```
+We see that there are only 3 majors in the list that contains either "Data" or "statistics"
+
+### 2) Write code that transforms the data below:
+[1] "bell pepper"  "bilberry"     "blackberry"   "blood orange"
+[5] "blueberry"    "cantaloupe"   "chili pepper" "cloudberry"  
+[9] "elderberry"   "lime"         "lychee"       "mulberry"    
+[13] "olive"        "salal berry"
+
+Into a format like this:
+c("bell pepper", "bilberry", "blackberry", "blood orange", "blueberry", "cantaloupe", "chili pepper", "cloudberry", "elderberry", "lime", "lychee", "mulberry", "olive", "salal berry")
+
+From my understanding, I believe I am suppose to take the above string and print it as what it would look like as a vector?
+```{r}
+fruits <- '[1] "bell pepper"  "bilberry"     "blackberry"   "blood orange"
+[5] "blueberry"    "cantaloupe"   "chili pepper" "cloudberry"  
+[9] "elderberry"   "lime"         "lychee"       "mulberry"    
+[13] "olive"        "salal berry"'
+
+
+list_fruits <- str_extract_all(string = fruits, pattern = '\\".*?\\"')
+
+#removing [x] characters
+items <- str_c(list_fruits[[1]], collapse = ', ')
+str_glue('c({items})', items = items)
+```
+
+The two exercises below are taken from R for Data Science, 14.3.5.1 in the on-line version:
+### 3) Describe, in words, what these expressions will match:
+
+    (.)\1\1 - Matches the same character appearing 3 times in a row ex. aaa
+    "(.)(.)\\2\\1" Matches a pair of characters to the same pair but backwards ex. appa
+    (..)\1 Matches any two characters that repeat ex. abab
+    "(.).\\1.\\1" A character, then any character, then the original character again, then any character, then the original character ex. qrqsq
+    "(.)(.)(.).*\\3\\2\\1" three characters, followed by 0 or more characters of any kind, followed by the original 3 characters backwards.  ex. abcdrlmnopcba
+
+### 4) Construct regular expressions to match words that:
+
+```{r}
+
+random_words <- c("apple", "keys", "america","high","tonight","onomonopia","window","door","cocoa","bucket","eye","leg","arm")
+
+#Start and end with the same character.
+str_subset(random_words, "^(.)((.*\\1$)|\\1?$)")
+
+#Contain a repeated pair of letters (e.g. "church" contains "ch" repeated twice.)
+str_subset(random_words,"([A-Za-z][A-Za-z]).*\\1")
+
+#Contain one letter repeated in at least three places (e.g. "eleven" contains three "e"s.)
+str_subset(random_words, "([a-z]).*\\1.*\\1")
+
+```
