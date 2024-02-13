@@ -1,0 +1,119 @@
+---
+title: "project-1_Data_607"
+author: "Natalie Kalukeerthie"
+date: "2024-02-12"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+In this project, you’re given a text file with chess tournament results where the information has some structure. Your job is to create an R Markdown file that generates a .CSV file (that could for example be imported into a SQL database) with the following information for all of the players:
+
+Player’s Name, Player’s State, Total Number of Points, Player’s Pre-Rating, and Average Pre Chess Rating of Opponents
+For the first player, the information would be:
+Gary Hua, ON, 6.0, 1794, 1605
+
+
+### Loading the data
+
+```{r}
+#load the data
+library(tidyverse)
+library(openintro)
+library(readr, quietly = TRUE)
+library(stringr, quietly = TRUE)
+
+chess_raw <- 'https://raw.githubusercontent.com/nk014914/Data-607/main/project_1_tournamentinfo.txt'
+
+#place in dataframe
+df <- read_lines(chess_raw)
+
+head(df)
+```
+
+
+### Configuring the Data
+
+```{r}
+#locate the pattern occurences
+x0 = 0
+x1 = unname(str_locate_all(pattern = '\\|', df[5])[[1]][1,1])
+x2 = unname(str_locate_all(pattern = '\\|', df[5])[[1]][2,1])
+x3 = unname(str_locate_all(pattern = '\\|', df[5])[[1]][3,1])
+x4 = max(nchar(df))
+
+#sequence and group
+seq1 = seq(5, 196, 3)
+seq2 = seq(6, 196, 3)
+group1 = df[seq1]
+group2 = df[seq2]
+
+
+```
+
+
+### Grouping the Data
+```{r}
+
+#grouping for each column
+
+#player names
+name = substr(group1, x1 + 1, x2 - 2)
+PlayerName = str_trim(name)
+
+#player state
+state = substr(group2, x0, x1 - 1)
+State = str_trim(state)
+
+#total points
+totalpts = substr(group1, x2 + 1, x3 - 1)
+
+#gpre-ratings
+pre = substr(group2, x1 + 1, x2 - 1)
+pre = str_extract(pre, ': *\\d{2,}')
+
+#add into df
+chess_scores = data.frame(PlayerName, State)
+chess_scores$TotalPts = sprintf("%.1f", as.numeric(totalpts))
+chess_scores$PreRating = as.integer(str_extract(pre, '\\d{2,}'))
+```
+
+
+### Calculating Opponent's Avg Pre Rating
+
+```{r}
+opp = substr(group1, x3 + 1, x4)
+opp = str_extract_all(opp, '\\b\\d{1,}')
+opp = as.matrix(opp)
+
+avgoppprerate = function(y, z){
+  x = y[z]
+  
+  for (a in x) {
+    rate = 0
+    c = 0
+    for (b in a) {
+      c = c + 1
+      rate = rate + chess_scores$PreRating[as.numeric(b)]
+    }
+    rate = round(rate/c)
+  }
+  return(rate)
+}
+
+chess_scores$AvgOppPreRating = apply(opp, 1, avgoppprerate)
+```
+
+
+### Converting txt to CSV
+
+```{r}
+head(chess_scores)
+
+#convert txt into csv
+
+write.csv(chess_scores, "chesstournamentinfo.csv")
+
+```
