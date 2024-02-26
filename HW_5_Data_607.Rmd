@@ -1,0 +1,107 @@
+---
+title: "HW_5_Data_607"
+author: "Natalie Kalukeerthie"
+date: "2024-02-24"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Assignment – Tidying and Transforming Data
+
+The chart above describes arrival delays for two airlines across five destinations. Your task is to:
+
+(1) Create a .CSV file (or optionally, a MySQL database!) that includes all of the information above.
+You’re encouraged to use a “wide” structure similar to how the information appears above, so
+that you can practice tidying and transformations as described below.
+
+(2) Read the information from your .CSV file into R, and use tidyr and dplyr as needed to tidy
+and transform your data.
+
+(3) Perform analysis to compare the arrival delays for the two airlines.
+
+(4) Your code should be in an R Markdown file, posted to rpubs.com, and should include narrative
+descriptions of your data cleanup work, analysis, and conclusions. Please include in your
+homework submission:
+ The URL to the .Rmd file in your GitHub repository. and
+ The URL for your rpubs.com web page.
+
+
+```{r}
+#load the data
+library(tidyverse)
+library(openintro)
+library(dplyr)
+
+airline_delays <- read.csv('https://raw.githubusercontent.com/nk014914/Data-607/main/airline_destinations_data_untidy.csv')
+
+#view the data
+head(airline_delays)
+
+```
+
+```{r}
+#Removing blank row and renaming columns
+airline_delays <- airline_delays %>% 
+  drop_na() %>%
+  rename(airline = X, status = X.1)
+
+#Filling NAs for missing airline cells then filling with the previous value downwards
+airline_delays <- airline_delays %>% 
+  mutate(airline = na_if(airline, '')) %>%
+  fill(airline, .direction = c('down'))
+
+```
+
+```{r}
+#Converting City rows into a column
+airline_delays <- airline_delays %>% 
+  gather(key = 'city', value = 'total.flights', 3:7)
+#airline_delays
+
+#separate by flight status and create column for total flights
+flightstatus <- spread(airline_delays, status, total.flights) %>%
+  mutate( total.flights = rowSums(across(where(is.numeric))))
+
+#rename on time to not have space
+flightstatus <- flightstatus %>%
+  rename('on.time' = 4)
+
+flightstatus
+
+```
+
+```{r}
+#analyzing delay rates between the two airlines
+
+#create columns for % of flights delayed and % of flights on-time
+
+airline_delays_summarized <- flightstatus %>%
+  group_by(airline, city) %>%
+  #creating sums of the delayed and ontime flights to use for rate formulas
+  summarise(total.delayed = sum(delayed), total.ontime = sum(on.time))%>%
+  mutate(total = rowSums(across(where(is.numeric))),
+       delay.rate = round(total.delayed / total*100, 2),
+       ontime.rate = round (total.ontime / total*100, 2))
+
+airline_delays_summarized
+
+
+#creating Visuals
+library(ggplot2)
+
+#viewing delay rates by city per airline
+ggplot(airline_delays_summarized, aes(fill= airline, y = delay.rate, x = city)) +
+  geom_bar(position="dodge", stat = "identity")
+
+#viewing ontime rates by city per airline
+ggplot(airline_delays_summarized, aes(fill= airline, y = ontime.rate, x = city)) +
+  geom_bar(position="dodge", stat = "identity")
+
+```
+
+## Conclusion
+
+Based on the tidied data and the stacked bar charts, we can conclude that for every destination, AM West had a higher rate of delayed flights in comparison to Alaska.
