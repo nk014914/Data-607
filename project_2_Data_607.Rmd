@@ -1,0 +1,372 @@
+---
+title: "Project_2_Data_607"
+author: "Natalie Kalukeerthie and Bishoy Sokkar"
+date: "2024-02-27"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+(1) Choose any three of the “wide” datasets identified in the Week 6 Discussion items. (You may
+use your own dataset; please don’t use my Sample Post dataset, since that was used in your
+Week 6 assignment!) For each of the three chosen datasets:
+
+Create a .CSV file (or optionally, a MySQL database!) that includes all of the information
+included in the dataset. You’re encouraged to use a “wide” structure similar to how the
+information appears in the discussion item, so that you can practice tidying and
+transformations as described below.
+
+Read the information from your .CSV file into R, and use tidyr and dplyr as needed to
+tidy and transform your data. [Most of your grade will be based on this step!]
+Perform the analysis requested in the discussion item.
+
+Your code should be in an R Markdown file, posted to rpubs.com, and should include
+narrative descriptions of your data cleanup work, analysis, and conclusions.
+
+(2) Please include in your homework submission, for each of the three chosen datasets:
+
+The URL to the .Rmd file in your GitHub repository, and The URL for your rpubs.com web page.
+
+
+### Dataset 1 - US Census: Population growth 2015 - 2020 of Southern States
+
+This dataset contains population data for 4 states in the span of 6 years (2015 - 2020) and is sourced from the US Census Bureau.
+
+We will analyse this data set in order to look for a things related to yearly population growth: 
+
+1. Descriptive statistics of the data
+2. Compare yearly growth between the states
+3. See which year had the largest population growth
+
+```{r}
+#load the data
+library(tidyverse)
+library(openintro)
+library(dplyr)
+library(ggplot2)
+
+population_data <- read.csv('https://raw.githubusercontent.com/nk014914/Data-607/main/Population_data.csv')
+
+population_data
+
+```
+
+```{r}
+
+#tidying the data
+
+#Removing blank rows and renaming the columns to shorten for just the year
+population_data <- population_data %>% 
+  drop_na() %>%
+  rename(state = Name, x2015 = X2015.Population, x2016 = X2016.Population, x2017 = X2017.Population, x2018 = X2018.Population, x2019 = X2019.Population, x2020 = X2020.Population)
+
+#remove unused columns
+population_data_subset <- subset(population_data, select= -c(FIPS,Abbreviations))
+
+#transforming data - putting years into columns to make long data
+population_data_subset <- population_data_subset %>% 
+  gather(key = 'year', value = 'population', 2:7)
+
+population_data_subset
+
+#remove x's in year column
+population_data_final <- population_data_subset %>%
+  mutate(across(c('year'), substr, 2, nchar(year)))
+
+population_data_final
+
+```
+
+### Analysis
+```{r}
+#First I need to make data as a numeric vector because my y axis was not in increasing order
+transform(population_data_final, population = as.numeric(population))
+
+#checking if column is now numeric
+class(population_data_final$population)
+
+```
+
+```{r}
+#Determine the summary statistics on population per year of the four states
+population_summary <- population_data_final %>%
+  group_by(year) %>%
+  summarize(mean = mean(population), median = median(population), min = min(population), max = max(population), na.rm = T) %>%
+  arrange(mean)
+
+population_summary 
+
+```
+
+```{r}
+#visualize growth of population per state
+ggplot(data=population_data_final, aes(x=year, y= population, group = state)) +
+  geom_line(aes(color=state))+
+  geom_point(aes(color=state))
+```
+
+Viewing the yearly state populations plotted, we can see a few things:
+- Georgia has the largest overall population every year, while South Carolina has the smallest (by a large difference in comparison to the other states.)
+
+- Georgia and North Carolina are closer in yearly population than the other two states as their lines are very close to one another.
+
+- Virginia seems to have the smallest yearly population growth as their line has the least amount of steepness in comparison to Virginia, North Carolina and Georgia.
+
+```{r}
+#Determining which year has the largest population growth
+
+#sum of population per year
+sum2015 = sum( population_data_final$population [ population_data_final$year==2015] )
+sum2016 = sum( population_data_final$population [ population_data_final$year==2016] )
+sum2017 = sum( population_data_final$population [ population_data_final$year==2017] )
+sum2018 = sum( population_data_final$population [ population_data_final$year==2018] )
+sum2019 = sum( population_data_final$population [ population_data_final$year==2019] )
+sum2020 = sum( population_data_final$population [ population_data_final$year==2020] )
+
+population_total = c(sum2015,sum2016,sum2017,sum2018,sum2019,sum2020)
+
+#add column with years and create dataframe
+year = c('2015','2016','2017','2018','2019','2020')
+sum_population = as.data.frame(year)
+
+sum_population$population_total <- population_total
+
+sum_population
+
+#calculate percent change per year over year, we will use the collapse package
+library(collapse)
+
+sum_population |> fmutate(growth = fgrowth(population_total))
+```
+
+
+## Conclusion
+
+Based on the analysis, we can see the largest population growth of the four states combined is between 2018 and 2019 with a growth of around 1.29. The smallest growth was from 2015 to 2016 at 1.04. An interesting find I saw was that the growth percentage was steadily increasing each year until 2019-2020 where it dropped to 1.13 the second lowest population growth of all 6 years.The recent drop in population growth could be attributed to economical/financial issue pertaining to the year, or the impeding issues cause by the corona virus, however more research will be needed to confirm or deny these assumptions.
+
+
+### Dataset 2 - Global Inflation Data
+
+For this data set, we will look into the following:
+
+1. Which region had the highest nad lowest CPI
+2. Look at a single country (US) and any changes we may see per year along with its min/max
+
+As suggested by Anna Moy and Mohammed Rahman, I used a csv called region in order to classify each country to a  region for simpler data categorization.
+
+```{r}
+
+#Load the csv
+global <- read.csv('https://raw.githubusercontent.com/nk014914/Data-607/main/global_inflation_data.csv')
+region <- read.csv('https://raw.githubusercontent.com/nk014914/Data-607/main/region.csv')
+
+colnames(region) <- c("country_name", "region")
+global_inflation <- merge(global, region, by = "country_name")
+
+head(global_inflation)
+```
+
+
+```{r}
+#Tidying the data
+
+#drop unnecessary column and NAs
+global_inflation <- subset(global_inflation, select = -c(indicator_name))
+global_inflation <- global_inflation %>%
+  select(country_name, region,X1980,X1980,X1981,X1982,X1983,X1984,X1985,X1986,X1987,X1988,X1989,X1990,X1991,X1992,X1993,X1994,X1995,X1996,X1997,X1998,X1999,X2000,X2001,X2002,X2003,X2004,X2005,X2006,X2007,X2008,X2009,X2010,X2011,X2012,X2013,X2014,X2015,X2016,X2017,X2018,X2019,X2020,X2021,X2022,X2023,X2024) %>%
+  pivot_longer(`X1980`:`X2024`,names_to = "year", values_to = "CPI_inflation", values_drop_na = TRUE) 
+
+
+#remove x's in year column
+global_inflation_final <- global_inflation %>%
+  mutate(across(c('year'), substr, 2, nchar(year)))
+
+global_inflation_final
+
+```
+
+### Analysis
+
+```{r}
+#Determine min and max of the regions, sorting by desc
+global_max <- global_inflation_final %>%
+  group_by(region) %>%
+  summarize(max_cpi = max(CPI_inflation)) %>%
+  arrange(desc(max_cpi))
+
+global_min <- global_inflation_final %>%
+  group_by(region) %>%
+  summarize(min_cpi = min(CPI_inflation)) %>%
+  arrange(min_cpi)
+
+global_min
+global_max
+```
+
+```{r}
+#Filter out the US to look at its min/max and determine its lowes CPI avg by sorting
+
+#Highest/lowest CPI year
+us_CPI <- global_inflation_final %>%
+  filter(country_name == "United States") %>%
+  mutate(min = min(CPI_inflation), max = max(CPI_inflation)) %>%
+  arrange(desc(CPI_inflation))
+us_CPI
+
+#CPI by year
+us_CPI_year <- global_inflation_final %>%
+  filter(country_name == "United States") %>%
+  mutate(min = min(CPI_inflation), max = max(CPI_inflation)) %>%
+  arrange(desc(year))
+
+us_CPI_year
+```
+
+## Conclusion
+
+After tidying and analyzing the data, the highest CPI for all regions is 65374 in the South/Latin America region. The lowest CPI is seen in Africa at -72.7. The drastic difference between the CPIs can be attributed to outliers. When looking at just the US in CPI descending order, we see 2009 had the lowest CPI (min) at -0.3, while 1980 has the highest CPI (max) at 13.5. Looking at year over year and outside 1981 and 1980, the US CPI did not fluctuate much and remained relatively constant.
+
+
+### Dataset #3 - CPI data for January 2024
+
+Dataset: ["Bureau of Labor Statistics - CPI Report for Jan2024"](https://www.bls.gov/cpi/tables/supplemental-files/home.htm)\
+
+
+```{r}
+# Load the data
+library(tidyverse)
+
+CPI_Jan <- read.csv("https://raw.githubusercontent.com/sokkarbishoy/DATA607/main/news-release-table1-202401.csv")
+
+head(CPI_Jan)
+
+```
+
+
+```{r}
+#We start tidying the data removing the first two rows, last three rows and empty rows
+
+CPI_Jan <- CPI_Jan[-c(1:5, 16, 25, 45:49), ]
+
+tail(CPI_Jan)
+
+```
+
+```{r}
+#change column names
+
+new_columns <- c("Indent_Level",
+
+                 "Expenditure_category",
+
+                 "Relative_importance_Dec_2023",
+
+                 "Jan_2023_Unadjusted_indexes", 
+
+                 "Dec_2023_Unadjusted_indexes", 
+
+                 "Jan_2024_Unadjusted_indexes",
+
+                 "Jan_2023_Jan_2024_Unadjusted_percent_change",
+
+                 "Dec_2023_Jan_2024_Unadjusted_percent_change", 
+
+                 "Oct_2023_Nov_2023_Seasonally_adjusted_percent_change",
+
+                 "Nov_2023_Dec_2023_Seasonally_adjusted_percent_change", 
+
+                 "Dec_2023_Jan_2024_Seasonally_adjusted_percent_change")
+
+colnames(CPI_Jan) <- new_columns
+
+ 
+
+#change the type into INT
+
+CPI_Jan$Indent_Level <- as.integer(CPI_Jan$Indent_Level)
+
+head(CPI_Jan)
+
+```
+
+Finally we change the type of each columns to INT and Numeric
+
+```{r}
+
+CPI_Jan <- transform(CPI_Jan, 
+
+          Indent_Level = as.integer(Indent_Level),
+
+          Relative_importance_Dec_2023 = as.numeric(Relative_importance_Dec_2023),
+
+          Jan_2023_Unadjusted_indexes = as.numeric(Jan_2023_Unadjusted_indexes),
+
+          Dec_2023_Unadjusted_indexes = as.numeric(Dec_2023_Unadjusted_indexes),
+
+          Jan_2024_Unadjusted_indexes = as.numeric(Jan_2024_Unadjusted_indexes),
+
+          Jan_2023_Jan_2024_Unadjusted_percent_change = as.numeric(Jan_2023_Jan_2024_Unadjusted_percent_change),
+
+          Dec_2023_Jan_2024_Unadjusted_percent_change = as.numeric(Dec_2023_Jan_2024_Unadjusted_percent_change),
+
+          Oct_2023_Nov_2023_Seasonally_adjusted_percent_change = as.numeric(Oct_2023_Nov_2023_Seasonally_adjusted_percent_change),
+
+          Nov_2023_Dec_2023_Seasonally_adjusted_percent_change = as.numeric(Nov_2023_Dec_2023_Seasonally_adjusted_percent_change),
+
+          Dec_2023_Jan_2024_Seasonally_adjusted_percent_change = as.numeric(Dec_2023_Jan_2024_Seasonally_adjusted_percent_change))
+
+```
+
+Analyzing the data:
+
+in the next lines, we will answer the question: which categories saw the biggest from December to Jan. Amother part of tidying the data will be using the filter function to analyse the subgroups only which will give us accurate data.
+
+Data shows that commodities expenditures such as Cereals, bakery products, as well as Energy and gasoline saw the least change.\
+
+```{r}
+
+CPI_Jan %>%
+
+  filter(Indent_Level == 3) %>%
+
+  arrange(Dec_2023_Jan_2024_Seasonally_adjusted_percent_change)
+
+```
+
+To view expenditures that saw the most change we can use the following code.
+
+```{r}
+
+CPI_Jan %>%
+
+  filter(Indent_Level == 3) %>%
+
+  arrange(desc(Dec_2023_Jan_2024_Seasonally_adjusted_percent_change))
+
+```
+
+Below we analyze the major categories (indent level = 3);
+
+```{r}
+
+CPI_Jan %>% 
+
+  filter(Indent_Level == 3) %>%
+
+  arrange(desc(Relative_importance_Dec_2023))
+
+```
+
+## Conclusion
+Conclusion: CPI data contains many more insights that I can be analyzed. Here are the questions we answered in the analysis above:
+
+Which category saw the least change from Dec 2023 - Jan 2024? Ans: Fuel oil, Used cars and trucks, and Motor fuel.
+A:  Fuel oil, Used cars and trucks, and Motor fuel.
+
+Which category saw the biggest change from Dec 2023 - Jan 2024? Ans: Utility Gas services, electricity, and transportation services.
+A:Utility Gas services, electricity, and transportation services.
+
+Which category saw the biggest change from Jan 2023 - Jan 2024? Ans: Transportation, Tobacco and smoking products, and Shelter. 
+A: Transportation, Tobacco and smoking products, and Shelter. 
