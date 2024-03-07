@@ -1,0 +1,26 @@
+[
+  {
+    "title": "Harry Potter and the Goblet of Fire",
+    "author": "J.K Rowling",
+    "genre": [
+      "Fantasy",
+      "Action"
+    ],
+    "pages": "752",
+    "publish year": 2000
+  },
+  {
+    "title": "Lovely Bones",
+    "author": "Alice Sebold",
+    "genre": "Mystery",
+    "pages": "328",
+    "publish year": 2002
+  },
+  {
+    "title": "Incantation",
+    "author": "Alice Hoffman",
+    "genre": "History",
+    "pages": "192",
+    "publish year": 2006
+  }
+]
