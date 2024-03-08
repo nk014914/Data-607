@@ -1,0 +1,101 @@
+---
+title: "HW_7_Data_607"
+author: "Natalie Kalukeerthie"
+date: "2024-03-07"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Assignment – Working with XML and JSON in R
+
+Pick three of your favorite books on one of your favorite subjects. At least one of the books should have more
+than one author. For each book, include the title, authors, and two or three other attributes that you find
+interesting.
+
+Take the information that you’ve selected about these three books, and separately create three files which
+store the book’s information in HTML (using an html table), XML, and JSON formats (e.g. “books.html”,
+“books.xml”, and “books.json”). To help you better understand the different file structures, I’d prefer that you
+create each of these files “by hand” unless you’re already very comfortable with the file formats.
+
+Write R code, using your packages of choice, to load the information from each of the three sources into
+separate R data frames. Are the three data frames identical?
+
+Your deliverable is the three source files and the R code. If you can, package your assignment solution up into
+an .Rmd file and publish to rpubs.com. [This will also require finding a way to make your three text files
+accessible from the web].
+
+### Files
+
+#### HTML
+https://github.com/nk014914/Data-607/blob/main/book_data_v2.html
+
+#### XML
+https://github.com/nk014914/Data-607/blob/main/book_data.xml
+
+#### JSON
+https://github.com/nk014914/Data-607/blob/main/book_data.json
+
+Each table is comprised of the following columns: Title, Author, Genre, Pages, and Publish Year. Because my chosen books only had one author per book, I created the genre column which can contain more than one genre per book. 
+
+```{r}
+#load the packages
+library(XML)
+library(jsonlite)
+library(RCurl)
+```
+
+I'm not exactly sure why but loading my HTML into R data frame had  "NULL." in front of each column name, even though it is not in the html code itself. So for that reason I removed it here to clean up the data frame columns.
+```{r html}
+#load html data
+book_html <- getURL('https://raw.githubusercontent.com/nk014914/Data-607/main/book_data_v2.html')
+
+book_html
+#view table
+html <- readHTMLTable(book_html)
+df_html <- data.frame(html)
+
+#remove null in column names
+colnames(df_html)[1] = "title"
+colnames(df_html)[2] = "author"
+colnames(df_html)[3] = "genre"
+colnames(df_html)[4] = "pages"
+colnames(df_html)[5] = "publish_year"
+df_html
+
+```
+
+With the XML package, we can use xmlParse and xmlToDataFrame to help us make the xml into a list and dataframe.
+```{r xml}
+#load xml data
+
+book_xml <- getURL('https://raw.githubusercontent.com/nk014914/Data-607/main/book_data.xml')
+
+book_xml
+
+#view table
+xml <- xmlParse(book_xml)
+df_xml <- xmlToDataFrame(xml)
+df_xml
+
+```
+
+We will use the jsonlite package for loading this data.
+```{r JSON}
+#load json data
+
+book_json <- getURL('https://raw.githubusercontent.com/nk014914/Data-607/main/book_data.json')
+
+book_json
+
+#view table
+df_json <- fromJSON(book_json)
+df_json
+
+```
+
+## Conclusion
+
+After loading all three data sets (HTML, XML, and JSON) and proper formatting for the html table, we can see that the three data frames are identical. JSON was the easiest to load as it didn't require any formatting or extra conversions, while HTML required both before putting it into a data frame.
