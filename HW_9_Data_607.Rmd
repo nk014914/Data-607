@@ -1,0 +1,81 @@
+---
+title: "HW_9_Data_607"
+author: "Natalie Kalukeerthie"
+date: "2024-03-17"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Assignment – Web APIs
+
+The New York Times web site provides a rich set of APIs, as described here: https://developer.nytimes.com/apis
+You’ll need to start by signing up for an API key.
+Your task is to choose one of the New York Times APIs, construct an interface in R to read in the JSON data, and
+transform it into an R DataFrame.
+
+
+```{r load_package, message=FALSE}
+#load the packages
+library(tidyverse)
+library(httr2)
+library(httr)
+library(jsonlite)
+library(dplyr)
+library(stringr)
+library(knitr)
+library(kableExtra)
+
+```
+
+
+I first accessed the NY Times API and registered for an API key.We will use "apikey" to store the key, and "books" to store the url for the NY Times Books API. We will be accessing the Books API. 
+
+```{r get_API}
+# API Key
+apikey <- "k9CxclOeI6dxOGdMEf7x73gHhYXIVgNS"
+
+# Get the URL 
+books <- GET(paste("https://api.nytimes.com/svc/books/v3/lists/best-sellers/history.json?api-key=", apikey,sep=""))
+
+# See if connection is successful
+books$status_code
+summary(books)
+
+#store as text
+books <- content(books, as = "text")
+
+```
+
+
+From using the Books API data, we will determine what are the top 3 best selling books.
+```{r JSON_to_dataframe}
+#place response in a object using fromJSNON() function
+booklist <-fromJSON(books)
+
+#results
+bestsellers <- booklist$results
+
+#view the data
+head(bestsellers)
+
+#Check if it is a data frame
+class(bestsellers)
+```
+
+```{r cleanup}
+
+#drop column names
+colnames(bestsellers)
+bestsellers
+
+head(bestsellers)
+```
+
+## Conclusion
+
+After connecting to the API and transforming the JSON data into an R dataframe, we can see that the top 3 selling books in history are "I give you my body", "Most Blessed of the Patriarchs" and "You just need to lose weight". 
+
+I believe using API can be very useful for sourcing a variety of data, though I had a bit of trouble initially connecting to the API and bringing in the response (it took a few different methods to get the status code from 401 to 202), but afterwards, using the fromJSON function from the jsonlite package made the process to converting the response into a data frame was more straightforward.
