@@ -1,0 +1,85 @@
+---
+title: "Discussion_4_Data_607"
+author: "Natalie Kalukeerthie"
+date: "2024-04-01"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Assignment – System Recommender
+
+**Perform a Scenario Design analysis as described below. Consider whether it makes sense for your selected recommender system to perform scenario design twice, once for the organization (e.g. Amazon.com) and once for the organization’s customers.**
+
+**1. Identify a recommender system web site**
+
+For this assignment, I chose Amazon's recommendation engine.
+
+**2. Answer the three scenario design questions for this web site.**
+
+  + **a. Who are your target users?**
+
+  + The target users are Amazon customers/consumers.
+
+  + **b. What are their key goals?**
+
+  + Their key goals are to discover/find new items that they need/want to buy.
+
+  + **c. How can you help them accomplish those goals?**
+
+  + We can help them accomplish these goals by suggesting items and products to them that are similar or relavent to past items     they've viewed on the site.
+
+
+**Attempt to reverse engineer what you can about the site, from the site interface and any available information that you can find on the Internet or elsewhere.**
+
+Based on my findings, Amazon uses existing user insights to build recommendations such user's previous page interactions and previous purchases.
+
+Amazon will use these insights to build personalized recommendations for every user. Recommendations come in formats like:
+
+**On-Page Recommendations** 
+Amazon creates a user specific product listing that displays products that they believe might take your interest. These products are determined by the user's past purchases and interactions (ex. search history, product page visits)
+
+**Similar User Purchases Recommendations** - For recommendations in real time that don't require immediate user action, Amazon will look to cross-sell products that other users pair with their purchases and viewing history. The recommendation system filters items based on product features and user characteristics (which is finding users that purchase/view similar products).
+
+**Cross-selling based on categories/product relationships** - The method is used where the recommendation system helps users find products that accompany the current product that a user is viewing, it filters out by product features and product category.
+
+**Recommendations based on browsing history** - These recommendations are used with user viewing history where they did not purchase the item.
+
+**Using interests and offers** - The recommendation system uses the user's interests and couples it with any existing deals in the hopes that users are more enticed to purchase the product.
+
+**Up-sell recommendations** - When looking at older/earlier versions of products, Amazon will recommend the newer version, which is generally more expensive, using the products features in the filtering system.
+
+**Off-Page Recommendations**- Using on-page user interaction data, Amazon will send users personalized emails with a curated list of items they may be interested in. users may also see display ads that may pop up in their browser.
+
+According to Amazon:
+
+> *"We make recommendations based on your interests.We examine the items you've purchased, items you've told us you own, and items you've rated. We compare your activity on our site with that of other customers, and using this comparison, recommend other items that may interest you in Your Amazon.Your recommendations change regularly, based on a number of factors, including when you purchase or rate a new item, and changes in the interests of other customers like you."*
+
+Maining the Amazon recommendation system uses a variety of filtering processes to recommend products.
+
+One is **Item-to-item collaborative filtering**, where the engine collects user and product data to create a relationship between them. There are three specific relationsships are that made:
+
++ User-item: A user specific matrix is created that contains the data of all products they have purchased and interacted with.
+
++ Item-item: The item-item matrix contains a mapping of product feature similarities. A gaming laptop and gaming mouse have the relationship of being an electronic item, a computing item, a gaming product, and so on.
+
++ User-user: This matrix contains a mapping of the similarities in user characteristics. Two users who purchased the same product and then gave it a rating of 4, for example, are mapped together. 
+
+*(Source: argoid.ai)*
+
+**Include specific recommendations about how to improve the site's recommendation capabilities going forward.** 
+
+A recommendation to improve Amazon's recommendation capabilities is to filter out unavailable items since user's can't purchase the item. 
+
+## Sources
+
+https://www.amazon.science/the-history-of-amazons-recommendation-algorithm
+
+https://www.argoid.ai/blog/decoding-amazons-recommendation-system
+
+https://www.baeldung.com/cs/amazon-recommendation-system
+
+
+
