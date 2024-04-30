@@ -1,0 +1,42 @@
+﻿,Movie title,rating,genre,year,date.x,location,score,votes,director,writer,star,country,budget,company,runtime,qtr,date.y,gross_income
+1,Star Wars: Episode IX - The Rise of Skywalker,PG-13,Action,2019,12/20/2019,United States),6.5,394000,J.J. Abrams,Chris Terrio,Daisy Ridley,United States,2.75E+08,Walt Disney Pictures,141,2019.4,Dec 20,515202542
+2,Frozen II,PG,Animation,2019,11/22/2019,United States),6.8,148000,Chris Buck,Jennifer Lee,Kristen Bell,United States,1.50E+08,Walt Disney Animation Studios,103,2019.4,Nov 22,477373578
+3,Joker,R,Crime,2019,10/4/2019,United States),8.4,1000000,Todd Phillips,Todd Phillips,Joaquin Phoenix,United States,5.50E+07,Warner Bros.,122,2019.4,Oct 4,335451311
+4,Jumanji: The Next Level,PG-13,Action,2019,12/13/2019,United States),6.6,204000,Jake Kasdan,Jake Kasdan,Dwayne Johnson,United States,1.25E+08,Columbia Pictures,123,2019.4,Dec 13,320314960
+5,Coco,PG,Animation,2017,11/22/2017,United States),8.4,417000,Lee Unkrich,Lee Unkrich,Anthony Gonzalez,United States,1.75E+08,Walt Disney Pictures,105,2017.4,Nov 22,210460015
+6,Bad Boys for Life,R,Action,2020,1/17/2020,United States),6.6,140000,Adil El Arbi,Peter Craig,Will Smith,United States,9.00E+07,Columbia Pictures,124,2020.1,Jan 17,206305244
+7,Knives Out,PG-13,Comedy,2019,11/27/2019,United States),7.9,505000,Rian Johnson,Rian Johnson,Daniel Craig,United States,4.00E+07,Lionsgate,130,2019.4,Nov 27,165363234
+8,1917,R,Drama,2019,1/10/2020,United States),8.3,473000,Sam Mendes,Sam Mendes,Dean-Charles Chapman,United States,9.50E+07,Dreamworks Pictures,119,2020.1,Dec 25,159227644
+9,Sonic the Hedgehog,PG,Action,2020,2/14/2020,United States),6.5,102000,Jeff Fowler,Pat Casey,Ben Schwartz,United States,8.50E+07,Paramount Pictures,99,2020.1,Feb 14,148974665
+10,Ford v Ferrari,PG-13,Action,2019,11/15/2019,United States),8.1,323000,James Mangold,Jez Butterworth,Matt Damon,United States,9.76E+07,Chernin Entertainment,152,2019.4,Nov 15,117624357
+11,Maleficent: Mistress of Evil,PG,Adventure,2019,10/18/2019,United States),6.6,91000,Joachim Rønning,Linda Woolverton,Angelina Jolie,United States,1.85E+08,Walt Disney Pictures,119,2019.4,Oct 18,113929605
+12,Little Women,PG,Drama,1994,12/25/1994,United States),7.3,54000,Gillian Armstrong,Louisa May Alcott,Susan Sarandon,United States,1.80E+07,Columbia Pictures,115,1994.4,Dec 25,108101214
+13,Little Women,PG,Drama,2019,12/25/2019,United States),7.8,159000,Greta Gerwig,Greta Gerwig,Saoirse Ronan,United States,4.00E+07,Columbia Pictures,135,2019.4,Dec 25,108101214
+14,The Addams Family,PG-13,Comedy,1991,11/22/1991,United States),6.9,140000,Barry Sonnenfeld,Charles Addams,Anjelica Huston,United States,3.00E+07,Orion Pictures,99,1991.4,Oct 11,100044905
+15,The Addams Family,PG,Animation,2019,10/11/2019,United States),5.8,31000,Greg Tiernan,Matt Lieberman,Oscar Isaac,Canada,2.40E+07,Metro-Goldwyn-Mayer (MGM),86,2019.4,Oct 11,100044905
+16,Birds of Prey,R,Action,2020,2/7/2020,United States),6.1,190000,Cathy Yan,Christina Hodson,Margot Robbie,United States,8.45E+07,Clubhouse Pictures (II),109,2020.1,Feb 7,84158461
+17,Dolittle,PG,Adventure,2020,1/17/2020,United States),5.6,53000,Stephen Gaghan,Stephen Gaghan,Robert Downey Jr.,United States,1.75E+08,Universal Pictures,101,2020.1,Jan 17,77047065
+18,Zombieland: Double Tap,R,Action,2019,10/18/2019,United States),6.7,151000,Ruben Fleischer,Rhett Reese,Woody Harrelson,United States,4.20E+07,2.0 Entertainment,99,2019.4,Oct 18,73123082
+19,The Invisible Man,R,Drama,2020,2/28/2020,United States),7.1,186000,Leigh Whannell,Leigh Whannell,Elisabeth Moss,Canada,7.00E+06,Universal Pictures,124,2020.1,Feb 28,70410000
+20,The Call of the Wild,PG,Adventure,2020,2/21/2020,United States),6.8,42000,Chris Sanders,Michael Green,Harrison Ford,Canada,1.35E+08,20th Century Studios,100,2020.1,Feb 21,62342368
+21,A Beautiful Day in the Neighborhood,PG,Biography,2019,11/22/2019,United States),7.3,67000,Marielle Heller,Micah Fitzerman-Blue,Tom Hanks,China,2.50E+07,Big Beach Films,109,2019.4,Nov 22,61704055
+22,Onward,PG,Animation,2020,3/6/2020,United States),7.4,120000,Dan Scanlon,Dan Scanlon,Tom Holland,United States,NA,Walt Disney Pictures,102,2020.1,Mar 6,61555145
+23,Tenet,PG-13,Action,2020,9/3/2020,United States),7.4,387000,Christopher Nolan,Christopher Nolan,John David Washington,United States,2.05E+08,Warner Bros.,150,2020.3,Sep 3,58504105
+24,Parasite,R,Horror,1982,3/12/1982,United States),3.9,2300,Charles Band,Alan J. Adler,Robert Glaudini,United States,8.00E+05,Embassy Pictures,85,1982.1,Oct 11,53369749
+25,Parasite,R,Comedy,2019,11/8/2019,United States),8.6,631000,Bong Joon Ho,Bong Joon Ho,Kang-ho Song,South Korea,1.14E+07,Barunson E&A,132,2019.4,Oct 11,53369749
+26,Wonder Woman 1984,PG-13,Action,2020,12/25/2020,United States),5.4,217000,Patty Jenkins,Patty Jenkins,Gal Gadot,United States,NA,Atlas Entertainment,151,2020.4,Dec 25,46801036
+27,Jojo Rabbit,PG-13,Comedy,2019,11/8/2019,United States),7.9,328000,Taika Waititi,Christine Leunens,Roman Griffin Davis,New Zealand,1.40E+07,TSG Entertainment,108,2019.4,Oct 18,33370906
+28,The Grudge,PG-13,Horror,2004,10/22/2004,United States),5.9,140000,Takashi Shimizu,Stephen Susco,Sarah Michelle Gellar,United States,1.00E+07,Columbia Pictures,91,2004.4,Jan 3,21221803
+29,The Way Back,PG-13,Adventure,2010,1/21/2011,United States),7.3,112000,Peter Weir,Slavomir Rawicz,Jim Sturgess,United States,3.00E+07,Exclusive Films,133,2011.1,-,13590514
+30,Black Christmas,R,Horror,2006,12/25/2006,United States),4.6,25000,Glen Morgan,Glen Morgan,Michelle Trachtenberg,Canada,9.00E+06,Dimension Films,95,2006.4,Dec 13,10429730
+31,Weathering with You,PG-13,Animation,2019,1/17/2020,United States),7.5,28000,Makoto Shinkai,Makoto Shinkai,Kotaro Daigo,Japan,1.11E+07,"""Weathering With You"" Film Partners",112,2020.1,Jan 15,8056636
+32,The Hunt,R,Drama,2012,1/10/2013,Denmark),8.3,297000,Thomas Vinterberg,Tobias Lindholm,Mads Mikkelsen,Denmark,3.80E+06,Danmarks Radio (DR),115,2013.1,Mar 13,5812500
+33,Ip Man 4: The Finale,Not Rated,Action,2019,12/20/2019,China),7,27000,Wilson Yip,Edmond Wong,Donnie Yen,Hong Kong,5.20E+07,Golden Harvest Company,107,2019.4,Dec 25,3956031
+34,Portrait of a Lady on Fire,R,Drama,2019,2/14/2020,United States),8.1,74000,Céline Sciamma,Céline Sciamma,Noémie Merlant,France,NA,Lilies Films,122,2020.1,Dec 6,3759854
+35,Pinocchio,G,Comedy,2002,12/25/2002,United States),4.4,7900,Roberto Benigni,Roberto Benigni,Roberto Benigni,Italy,NA,Melampo Cinematografica,108,2002.4,Dec 25,1831718
+36,The Call,R,Crime,2013,3/15/2013,United States),6.7,115000,Brad Anderson,Richard D'Ovidio,Halle Berry,United States,1.30E+07,TriStar Pictures,94,2013.1,Oct 2,516521
+37,Infamous,R,Biography,2006,10/13/2006,United States),7.1,17000,Douglas McGrath,Douglas McGrath,Toby Jones,United States,1.30E+07,Warner Independent Pictures (WIP),110,2006.4,Jun 12,429148
+38,Tulsa,PG-13,Comedy,2020,6/3/2020,United States),5,294,Scott Pryor,Scott Pryor,Scott Pryor,United States,NA,Pryor Entertainment,120,2020.2,Aug 21,413378
+39,The Eight Hundred,Not Rated,Action,2020,8/28/2020,United States),6.8,3700,Hu Guan,Hu Guan,Zhi-zhong Huang,China,8.00E+07,Beijing Diqi Yinxiang Entertainment,149,2020.3,Aug 28,372755
+40,Les Misérables,PG-13,Crime,1998,5/1/1998,United States),7.4,39000,Bille August,Victor Hugo,Liam Neeson,United Kingdom,NA,Mandalay Entertainment,134,1998.2,Jan 10,330181
+41,Les Misérables,PG-13,Drama,2012,12/25/2012,United States),7.6,315000,Tom Hooper,William Nicholson,Hugh Jackman,United Kingdom,6.10E+07,Universal Pictures,158,2012.4,Jan 10,330181
